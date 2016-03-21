@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Create instace of Firebase
+        // Create instance of Firebase
         firebase = new Firebase(Constants.FIREBASE_URL);
 
         // Intent to main activity
