@@ -48,14 +48,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         //UI//////////////////////////////////////////////////////////
-        mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_main);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
         myFAB = (FloatingActionButton) findViewById(R.id.my_fab);
         ////////////////////////////////////////////////////////////
 
-       
+
         ///////////////////////////////////////////////////////////////////////////
         // Listeners
         ///////////////////////////////////////////////////////////////////////////
@@ -68,21 +67,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-         mAdapter = new FirebaseRecyclerAdapter<Note, NoteAdapter.NoteViewHolder>(Note.class, android.R.layout.simple_list_item_1, NoteAdapter.NoteViewHolder.class, mCurrentUserNotes) {
-             @Override
-             protected void populateViewHolder(NoteAdapter.NoteViewHolder viewHolder, Note note, int i) {
-                 viewHolder.noteContent.setText(note.getContent());
-             }
-         };
+        FirebaseRecyclerAdapter<Note, NoteAdapter.NoteViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Note, NoteAdapter.NoteViewHolder>(
+                        Note.class,
+                        android.R.layout.simple_list_item_1,
+                        NoteAdapter.NoteViewHolder.class, mCurrentUserNotes
+                ){
+                    @Override
+                    protected void populateViewHolder(NoteAdapter.NoteViewHolder viewHolder, Note note, int i) {
+                        viewHolder.noteContent.setText(note.getContent());
+                    }
+        };
 
-        mRecyclerView.setAdapter(mAdapter);
-
+        mRecyclerView.setAdapter(adapter);
     }
-
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

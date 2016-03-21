@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.firebase.client.ValueEventListener;
-import com.kevinhodges.donote.R;
 
 import java.util.ArrayList;
 
@@ -24,12 +23,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         this.notes = notes;
     }
 
+
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.custom_row_note, parent, false);
-        NoteViewHolder viewHolder = new NoteViewHolder(view);
-
-        return viewHolder;
+        return null;
     }
 
     @Override
@@ -45,7 +42,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     ///////////////////////////////////////////////////////////////////////////
     // ViewHolder
     ///////////////////////////////////////////////////////////////////////////
-    public class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public static class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         public TextView noteContent;
 
