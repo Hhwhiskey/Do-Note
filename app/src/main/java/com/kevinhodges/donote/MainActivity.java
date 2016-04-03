@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<Note, NoteAdapter.NoteViewHolder> adapter =
                 new FirebaseRecyclerAdapter<Note, NoteAdapter.NoteViewHolder>(
                         Note.class,
-                        android.R.layout.simple_list_item_1,
+                        android.R.layout.simple_list_item_2,
                         NoteAdapter.NoteViewHolder.class, mCurrentUserNotes
                 ){
                     @Override

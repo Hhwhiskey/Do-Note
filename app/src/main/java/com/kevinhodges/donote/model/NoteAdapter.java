@@ -23,7 +23,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         this.notes = notes;
     }
 
-
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return null;
