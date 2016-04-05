@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +20,6 @@ import com.kevinhodges.donote.model.Note;
 import com.kevinhodges.donote.model.NoteAdapter;
 import com.kevinhodges.donote.utils.Constants;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -29,13 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton myFAB;
     private String mUserId;
     private RecyclerView mRecyclerView;
-    private NoteAdapter mNoteAdapter;
-    private LinearLayoutManager mLinearLayoutManager;
-    private Object mUserNotes;
-    private Note note;
-    private ArrayList notes = new ArrayList();
-    private RecyclerView mListView;
-    private FirebaseRecyclerAdapter<Note, NoteAdapter.NoteViewHolder> mAdapter;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
         myFAB = (FloatingActionButton) findViewById(R.id.my_fab);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ////////////////////////////////////////////////////////////
 
 

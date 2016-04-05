@@ -1,10 +1,13 @@
 package com.kevinhodges.donote.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.ServerValue;
@@ -19,6 +22,7 @@ public class NewNoteActivity extends AppCompatActivity {
     private Firebase firebase;
     private String userId;
     private Firebase currentUserFirebase;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +30,21 @@ public class NewNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_note);
 
         firebase = new Firebase(Constants.FIREBASE_URL);
+
         userId = firebase.getAuth().getUid();
-        currentUserFirebase = new Firebase(Constants.FIREBASE_URL + "/users/" + userId + "/notes/");
 
-
+        if (userId == null) {
+            Toast.makeText(NewNoteActivity.this, "Please sign in first", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(NewNoteActivity.this, LoginActivity.class);
+            startActivity(intent);
+        } else {
+            currentUserFirebase = new Firebase(Constants.FIREBASE_URL + "/users/" + userId + "/notes/");
+        }
 
         //UI////////////////////////////////////////////////////
         autoCompleteNewNote = (AutoCompleteTextView) findViewById(R.id.ac_new_note_text);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ///////////////////////////////////////////////////////
 
     }

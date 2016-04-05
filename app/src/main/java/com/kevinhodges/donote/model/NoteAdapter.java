@@ -1,5 +1,6 @@
 package com.kevinhodges.donote.model;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +19,12 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     private ArrayList<Note> notes;
     private ValueEventListener valueEventListener;
     private LayoutInflater inflater;
+    private Context mContext;
+
 
     public NoteAdapter(ArrayList<Note> notes) {
         this.notes = notes;
+//        this.mContext = context;
     }
 
     @Override
@@ -53,7 +57,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
         @Override
         public void onClick(View v) {
-
         }
 
         @Override
