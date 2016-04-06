@@ -6,18 +6,33 @@ package com.kevinhodges.donote.model;
 public class Note {
 
     private String author;
+    private String title;
     private String content;
-//    private String time;
-
+    private String id;
 
     public Note() {
 
     }
 
-    public Note(String author, String content, String time) {
+    public Note(String author, String title, String content) {
         this.author = author;
+        this.title = title;
         this.content = content;
-//        this.time = time;
+    }
+
+//    public Note(String author, String title, String content, String id) {
+//        this.author = author;
+//        this.title = title;
+//        this.content = content;
+//        this.id = id;
+//    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getAuthor() {
@@ -36,13 +51,11 @@ public class Note {
         this.content = content;
     }
 
-//    public String getTime() {
-//        return time;
-//    }
-//
-//    public void setTime(String time) {
-//        this.time = time;
-//    }
+    public String getId() {
+        return id;
+    }
 
-
+    public void setId(String id) {
+        this.id = id;
+    }
 }

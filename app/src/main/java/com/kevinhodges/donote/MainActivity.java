@@ -10,12 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.kevinhodges.donote.activities.LoginActivity;
 import com.kevinhodges.donote.activities.NewNoteActivity;
 import com.kevinhodges.donote.activities.SettingsActivity;
+import com.kevinhodges.donote.activities.ViewNoteActivity;
 import com.kevinhodges.donote.model.Note;
 import com.kevinhodges.donote.model.NoteAdapter;
 import com.kevinhodges.donote.utils.Constants;
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private String mUserId;
     private RecyclerView mRecyclerView;
     private Toolbar toolbar;
+    private String userEmail;
+    private Firebase mCurrentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +40,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mFirebase = new Firebase(Constants.FIREBASE_URL);
-        mUserId = mFirebase.getAuth().getUid();
+
+        try {
+            mUserId = mFirebase.getAuth().getUid();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(MainActivity.this, "Please sign in first", Toast.LENGTH_LONG).show();
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+        }
+
+        mCurrentUser = new Firebase(mFirebase + "/users/" + mUserId);
         mCurrentUserNotes = new Firebase(Constants.FIREBASE_URL + "/users/" + mUserId + "/notes/");
+        mCurrentUserNotes.orderByValue();
+
+        Intent extra = getIntent();
+        userEmail = extra.getStringExtra("userEmail");
+
+        if (userEmail != null) {
+            mCurrentUser.child("email").setValue(userEmail);
+        }
+
+
 
 
         //UI//////////////////////////////////////////////////////////
@@ -67,14 +91,42 @@ public class MainActivity extends AppCompatActivity {
                         Note.class,
                         android.R.layout.simple_list_item_2,
                         NoteAdapter.NoteViewHolder.class, mCurrentUserNotes
-                ){
+                ) {
                     @Override
-                    protected void populateViewHolder(NoteAdapter.NoteViewHolder viewHolder, Note note, int i) {
+                    protected void populateViewHolder(NoteAdapter.NoteViewHolder viewHolder, final Note note, final int i) {
+
+                        viewHolder.noteTitle.setText(note.getTitle());
+                        viewHolder.noteTitle.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final Firebase noteReference = getRef(i);
+                                onNoteClicked(note, noteReference);
+                            }
+                        });
                         viewHolder.noteContent.setText(note.getContent());
+                        viewHolder.noteContent.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final Firebase noteReference = getRef(i);
+                                onNoteClicked(note, noteReference);
+                            }
+                        });
                     }
-        };
+                };
 
         mRecyclerView.setAdapter(adapter);
+    }
+
+    public void onNoteClicked(Note note, Firebase ref) {
+
+        String firebaseRefString = ref.toString();
+
+        Intent intentViewNote = new Intent(MainActivity.this, ViewNoteActivity.class);
+        intentViewNote.putExtra("noteAuthor", note.getAuthor());
+        intentViewNote.putExtra("noteTitle", note.getTitle());
+        intentViewNote.putExtra("noteContent", note.getContent());
+        intentViewNote.putExtra("noteReference", firebaseRefString);
+        startActivity(intentViewNote);
     }
 
     @Override

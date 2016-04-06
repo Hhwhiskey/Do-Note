@@ -1,6 +1,5 @@
 package com.kevinhodges.donote.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,19 +9,20 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.firebase.client.ServerValue;
 import com.kevinhodges.donote.R;
 import com.kevinhodges.donote.model.Note;
 import com.kevinhodges.donote.utils.Constants;
 
 public class NewNoteActivity extends AppCompatActivity {
 
-    private AutoCompleteTextView autoCompleteNewNote;
-    private String newNoteString;
+    private AutoCompleteTextView noteContentAC;
+    private String noteTitleString;
+    private String noteContentString;
     private Firebase firebase;
-    private String userId;
-    private Firebase currentUserFirebase;
+    private String userIdString;
+    private Firebase currentUserNotesFirebase;
     private Toolbar toolbar;
+    private AutoCompleteTextView noteTitleAC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +30,13 @@ public class NewNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_note);
 
         firebase = new Firebase(Constants.FIREBASE_URL);
+        userIdString = firebase.getAuth().getUid();
+        currentUserNotesFirebase = new Firebase(Constants.FIREBASE_URL + "/users/" + userIdString + "/notes/");
 
-        userId = firebase.getAuth().getUid();
-
-        if (userId == null) {
-            Toast.makeText(NewNoteActivity.this, "Please sign in first", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(NewNoteActivity.this, LoginActivity.class);
-            startActivity(intent);
-        } else {
-            currentUserFirebase = new Firebase(Constants.FIREBASE_URL + "/users/" + userId + "/notes/");
-        }
 
         //UI////////////////////////////////////////////////////
-        autoCompleteNewNote = (AutoCompleteTextView) findViewById(R.id.ac_new_note_text);
+        noteTitleAC = (AutoCompleteTextView) findViewById(R.id.ac_new_note_title);
+        noteContentAC = (AutoCompleteTextView) findViewById(R.id.ac_new_note_content);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ///////////////////////////////////////////////////////
@@ -60,10 +54,20 @@ public class NewNoteActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.save) {
-            newNoteString = autoCompleteNewNote.getText().toString();
-            String time = String.valueOf(ServerValue.TIMESTAMP);
-            Note note = new Note(userId, newNoteString, time);
-            currentUserFirebase.push().setValue(note);
+            noteTitleString = noteTitleAC.getText().toString();
+            noteContentString = noteContentAC.getText().toString();
+
+            if (noteTitleString.equals("")) {
+                Toast.makeText(NewNoteActivity.this, "Make sure to enter a title first", Toast.LENGTH_LONG).show();
+
+            } else if (noteContentString.equals("")) {
+                Toast.makeText(NewNoteActivity.this, "Oops, this note is empty!", Toast.LENGTH_LONG).show();
+
+            } else {
+                Note note = new Note(userIdString, noteTitleString, noteContentString);
+                currentUserNotesFirebase.push().setValue(note);
+                finish();
+            }
 
             return true;
         }

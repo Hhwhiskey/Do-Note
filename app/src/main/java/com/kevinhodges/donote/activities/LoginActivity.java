@@ -23,7 +23,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
-    private Firebase firebase;
+    private Firebase mFirebase;
     private AutoCompleteTextView emailInput;
     private EditText passwordInput;
     private String emailString;
@@ -32,20 +32,23 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private Button signupButton;
     private Intent intentToMainActivity;
+    private String mUserId;
+    private Firebase mUsersReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Create instance of Firebase
-        firebase = new Firebase(Constants.FIREBASE_URL);
+
+        mFirebase = new Firebase(Constants.FIREBASE_URL);
+        mUsersReference = new Firebase(Constants.FIREBASE_URL + "/users/");
 
         // Intent to main activity
         intentToMainActivity = new Intent(LoginActivity.this, MainActivity.class);
 
         // If the user is auth then go to main activity
-        if (firebase.getAuth() != null) {
+        if (mFirebase.getAuth() != null) {
             startActivity(intentToMainActivity);
         }
 
@@ -62,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 emailString = emailInput.getText().toString().toLowerCase();
                 passwordString = passwordInput.getText().toString().toLowerCase();
                 signUp(emailString, passwordString);
+
             }
         });
 
@@ -77,11 +81,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void signUp(final String email, final String password) {
 
-        firebase.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
+        mFirebase.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
-                Toast.makeText(LoginActivity.this, "You have successfully signed up and can now log in!", Toast.LENGTH_LONG).show();
-
+                Toast.makeText(LoginActivity.this, "You have successfully signed up to Do-Note and can now log in", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -96,13 +99,15 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void login(String email, String password) {
+    public void login(final String email, String password) {
 
-        firebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+        mFirebase.authWithPassword(email, password, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
                 Toast.makeText(LoginActivity.this, "You have logged into Do Note!", Toast.LENGTH_LONG).show();
-                startActivity(intentToMainActivity);
+                Intent signUpIntent = new Intent(LoginActivity.this, MainActivity.class);
+                signUpIntent.putExtra("userEmail", email);
+                startActivity(signUpIntent);
             }
 
             @Override
@@ -117,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void changePassword(String email, String oldPassword, String newPassword) {
 
-        firebase.changePassword(email, oldPassword, newPassword, new Firebase.ResultHandler() {
+        mFirebase.changePassword(email, oldPassword, newPassword, new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
                 // passwordInput changed
@@ -132,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void resetPassword(String email) {
 
-        firebase.resetPassword(email, new Firebase.ResultHandler() {
+        mFirebase.resetPassword(email, new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
                 Toast.makeText(LoginActivity.this, "Check your emailInput for passwordInput reset instructions", Toast.LENGTH_LONG).show();
