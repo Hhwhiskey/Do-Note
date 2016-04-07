@@ -14,7 +14,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginBottom="8dp">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -28,5 +30,7 @@
         app:rippleColor="#FFFFFF"
         android:elevation="8dp"
         android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_fab_add"
+
         />
 </RelativeLayout>

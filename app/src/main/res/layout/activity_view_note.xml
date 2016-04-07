@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<android.support.design.widget.CoordinatorLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/root_layout"-->
+    <!--android:fitsSystemWindows="true"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_width="match_parent">-->
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,63 +19,63 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar"></include>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/note_title_text_input_layout"
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/tv_view_note_title"
+
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:counterEnabled="true"
-        app:counterMaxLength="20"
-        app:errorTextAppearance="@android:color/holo_red_dark"
+        android:text="title"
         android:layout_below="@+id/toolbar"
-        android:layout_margin="16dp">
-        <AutoCompleteTextView
-            android:id="@+id/ac_view_note_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/toolbar"
-            android:background="@android:color/transparent"
-            android:capitalize="sentences"
-            android:inputType="textCapSentences|textAutoComplete|textAutoCorrect|textMultiLine"
-            android:singleLine="true"
-            android:hint="Title..."/>
-    </android.support.design.widget.TextInputLayout>
+        android:layout_margin="16dp"
+        android:textSize="16dp"
+        android:textColor="#000000" />
 
     <TableRow
         android:id="@+id/hr"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#444"
-        android:layout_below="@+id/note_title_text_input_layout"
+        android:layout_below="@+id/tv_view_note_title"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/note_content_text_input_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        app:counterEnabled="true"
-        app:errorTextAppearance="@android:color/holo_red_dark"
-        android:layout_below="@+id/note_title_text_input_layout"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_alignParentBottom="true">
-        <AutoCompleteTextView
-            android:id="@+id/ac_view_note_content"
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/hr">
+
+        <TextView
+            android:id="@+id/tv_view_note_content"
+            android:text="content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:textSize="16dp"
+            android:layout_below="@+id/hr"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/ac_new_note_title"
-            android:background="@android:color/transparent"
-            android:capitalize="sentences"
-            android:hint="Note..."
-            android:inputType="textCapSentences|textAutoComplete|textAutoCorrect|textMultiLine" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:textColor="#000000" />
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_view_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        app:rippleColor="#FFFFFF"
+        android:elevation="8dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_fab_edit"
+        app:layout_anchor="@id/scrollView"
+        app:layout_behavior="com.kevinhodges.donote.utils.ScrollAwareFABBehavior"
+        />
 
 </RelativeLayout>
+<!--<android.support.design.widget.CoordinatorLayout/>-->

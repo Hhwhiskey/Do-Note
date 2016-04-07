@@ -1,6 +1,8 @@
 package com.kevinhodges.donote.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -23,6 +25,7 @@ public class NewNoteActivity extends AppCompatActivity {
     private Firebase currentUserNotesFirebase;
     private Toolbar toolbar;
     private AutoCompleteTextView noteTitleAC;
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class NewNoteActivity extends AppCompatActivity {
         userIdString = firebase.getAuth().getUid();
         currentUserNotesFirebase = new Firebase(Constants.FIREBASE_URL + "/users/" + userIdString + "/notes/");
 
+        builder = new AlertDialog.Builder(NewNoteActivity.this);
 
         //UI////////////////////////////////////////////////////
         noteTitleAC = (AutoCompleteTextView) findViewById(R.id.ac_new_note_title);
@@ -41,6 +45,30 @@ public class NewNoteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ///////////////////////////////////////////////////////
 
+    }
+
+    public void backDiscardWarningDialog() {
+
+        builder.setTitle("Discard changes?");
+        builder.setMessage("Changes have been made to this note. Would you like to save them?");
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Note note = new Note(userIdString, noteTitleString, noteContentString);
+                currentUserNotesFirebase.push().setValue(note);
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("Discard", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }
+        );
+
+        builder.show();
     }
 
     @Override
@@ -82,6 +110,16 @@ public class NewNoteActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
+        noteTitleString = noteTitleAC.getText().toString();
+        noteContentString = noteContentAC.getText().toString();
+
+        if (!noteTitleString.equals("") || (!noteContentString.equals(""))) {
+
+            backDiscardWarningDialog();
+
+        } else {
+            finish();
+        }
     }
 }

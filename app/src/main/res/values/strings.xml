@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Do Note</string>
+    <string name="app_name">DoNote</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

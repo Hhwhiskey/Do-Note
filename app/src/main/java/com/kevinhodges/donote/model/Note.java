@@ -1,5 +1,10 @@
 package com.kevinhodges.donote.model;
 
+import android.app.Activity;
+import android.widget.Toast;
+
+import com.firebase.client.Firebase;
+
 /**
  * Created by Kevin on 3/20/2016.
  */
@@ -26,6 +31,28 @@ public class Note {
 //        this.content = content;
 //        this.id = id;
 //    }
+
+
+
+    public void updateNote(Activity activity,
+                           Firebase mNoteBeingEdited,
+                           String noteAuthorExtra,
+                           String updatedTitleString,
+                           String updatedContentString) {
+
+        if (updatedTitleString.equals("")) {
+            Toast.makeText(activity, "Make sure to enter a title first", Toast.LENGTH_LONG).show();
+
+        } else if (updatedContentString.equals("")) {
+            Toast.makeText(activity, "Oops, this note is empty!", Toast.LENGTH_LONG).show();
+
+        } else {
+            Note editedNote = new Note(noteAuthorExtra, updatedTitleString, updatedContentString);
+            mNoteBeingEdited.setValue(editedNote);
+            activity.finish();
+        }
+    }
+
 
     public String getTitle() {
         return title;

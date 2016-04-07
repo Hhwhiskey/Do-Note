@@ -1,8 +1,10 @@
 package com.kevinhodges.donote;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.*;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +18,6 @@ import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.kevinhodges.donote.activities.LoginActivity;
 import com.kevinhodges.donote.activities.NewNoteActivity;
-import com.kevinhodges.donote.activities.SettingsActivity;
 import com.kevinhodges.donote.activities.ViewNoteActivity;
 import com.kevinhodges.donote.model.Note;
 import com.kevinhodges.donote.model.NoteAdapter;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         mCurrentUser = new Firebase(mFirebase + "/users/" + mUserId);
         mCurrentUserNotes = new Firebase(Constants.FIREBASE_URL + "/users/" + mUserId + "/notes/");
-        mCurrentUserNotes.orderByValue();
+        mCurrentUserNotes.orderByKey();
 
         Intent extra = getIntent();
         userEmail = extra.getStringExtra("userEmail");
@@ -139,11 +140,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.settings) {
-            Intent intentSettings = new Intent(MainActivity.this, SettingsActivity.class);
-            startActivity(intentSettings);
-            return true;
-        }
+//        if (id == R.id.settings) {
+//            Intent intentSettings = new Intent(MainActivity.this, SettingsActivity.class);
+//            startActivity(intentSettings);
+//            return true;
+//        }
 
         if (id == R.id.logout) {
             mFirebase.unauth();
@@ -153,5 +154,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Exit");
+        builder.setMessage("Are you sure you would like to exit DoNote now?");
+        builder.setNegativeButton("Stay Here", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
+            }
+        });
+        builder.show();
+
+
     }
 }

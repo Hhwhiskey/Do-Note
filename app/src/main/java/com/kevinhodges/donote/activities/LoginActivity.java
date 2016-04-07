@@ -75,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                 emailString = emailInput.getText().toString().toLowerCase();
                 passwordString = passwordInput.getText().toString().toLowerCase();
                 login(emailString, passwordString);
+                finish();
             }
         });
     }

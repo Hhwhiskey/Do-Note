@@ -1,6 +1,7 @@
 package com.kevinhodges.donote.model;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +55,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             super(itemView);
 
             noteTitle = (TextView)itemView.findViewById(android.R.id.text1);
+            noteTitle.setTypeface(null, Typeface.BOLD);
+
             noteContent = (TextView)itemView.findViewById(android.R.id.text2);
+            noteContent.setMaxLines(5);
+
         }
 
         @Override
