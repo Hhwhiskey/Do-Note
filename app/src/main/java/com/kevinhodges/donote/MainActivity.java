@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.logout) {
             mFirebase.unauth();
             Intent intentLogin = new Intent(MainActivity.this, LoginActivity.class);
+            finish();
             startActivity(intentLogin);
             return true;
         }

@@ -1,9 +1,11 @@
 package com.kevinhodges.donote.model;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.kevinhodges.donote.activities.ViewNoteActivity;
 
 /**
  * Created by Kevin on 3/20/2016.
@@ -13,7 +15,7 @@ public class Note {
     private String author;
     private String title;
     private String content;
-    private String id;
+    private Firebase editedNoteReference;
 
     public Note() {
 
@@ -25,16 +27,8 @@ public class Note {
         this.content = content;
     }
 
-//    public Note(String author, String title, String content, String id) {
-//        this.author = author;
-//        this.title = title;
-//        this.content = content;
-//        this.id = id;
-//    }
-
-
-
-    public void updateNote(Activity activity,
+    // Update the current note on Firebase and launch ViewNoteActivity with updated values
+    public Firebase updateNote(Activity activity,
                            Firebase mNoteBeingEdited,
                            String noteAuthorExtra,
                            String updatedTitleString,
@@ -49,8 +43,17 @@ public class Note {
         } else {
             Note editedNote = new Note(noteAuthorExtra, updatedTitleString, updatedContentString);
             mNoteBeingEdited.setValue(editedNote);
+            editedNoteReference = mNoteBeingEdited.getRef();
+
+            Intent viewNoteIntent = new Intent(activity, ViewNoteActivity.class);
+            viewNoteIntent.putExtra("noteTitle", updatedTitleString);
+            viewNoteIntent.putExtra("noteContent", updatedContentString);
+            viewNoteIntent.putExtra("noteReference", mNoteBeingEdited.toString());
             activity.finish();
+            activity.startActivity(viewNoteIntent);
         }
+
+        return editedNoteReference;
     }
 
 
@@ -78,11 +81,5 @@ public class Note {
         this.content = content;
     }
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 }

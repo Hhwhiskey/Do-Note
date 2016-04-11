@@ -122,9 +122,15 @@ public class EditNoteActivity extends AppCompatActivity {
         if (!noteTitleExtra.equals(updatedTitleString) || (!noteContentExtra.equals(updatedContentString))) {
 
             Dialogs.discardOrSaveDialog(EditNoteActivity.this, mCurrentNoteReference, noteAuthorExtra, updatedTitleString, updatedContentString);
+
         } else {
 
+            Intent viewNoteIntent = new Intent(EditNoteActivity.this, ViewNoteActivity.class);
+            viewNoteIntent.putExtra("noteTitle", updatedTitleString);
+            viewNoteIntent.putExtra("noteContent", updatedContentString);
+            viewNoteIntent.putExtra("noteReference", noteReference);
             finish();
+            startActivity(viewNoteIntent);
         }
     }
 

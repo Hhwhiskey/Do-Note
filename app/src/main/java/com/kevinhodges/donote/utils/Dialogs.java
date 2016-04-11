@@ -15,6 +15,7 @@ public class Dialogs {
 
     private static int deleteNoteResult = 0;
 
+    // Verify that the user wants to delete the note
     public static int deleteNoteDialog(final Activity activity, final Firebase noteBeingEdited) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -43,6 +44,7 @@ public class Dialogs {
         return deleteNoteResult;
     }
 
+    // Ask the user if they would like to discard or save the note, if save, call the update note method
     public static void discardOrSaveDialog(final Activity activity,
                                            final Firebase editedNote,
                                            final String noteAuthor,
