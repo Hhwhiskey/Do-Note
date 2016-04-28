@@ -79,12 +79,13 @@ public class ViewNoteActivity extends AppCompatActivity {
 
         if (id == R.id.invite) {
             Toast.makeText(ViewNoteActivity.this, "Soon you will be able to invite friends to collaborate on your notes!", Toast.LENGTH_LONG).show();
-            Intent inviteActivityIntent = new Intent(ViewNoteActivity.this, InviteToNoteActivity.class);
-            inviteActivityIntent.putExtra("noteAuthor", noteAuthorExtra);
-            inviteActivityIntent.putExtra("noteTitle", noteTitleExtra);
-            inviteActivityIntent.putExtra("noteContent", noteContentExtra);
-            inviteActivityIntent.putExtra("noteReference", noteReference);
-            startActivity(inviteActivityIntent);
+// TODO: 4/28/2016 Invites
+//            Intent inviteActivityIntent = new Intent(ViewNoteActivity.this, InviteToNoteActivity.class);
+//            inviteActivityIntent.putExtra("noteAuthor", noteAuthorExtra);
+//            inviteActivityIntent.putExtra("noteTitle", noteTitleExtra);
+//            inviteActivityIntent.putExtra("noteContent", noteContentExtra);
+//            inviteActivityIntent.putExtra("noteReference", noteReference);
+//            startActivity(inviteActivityIntent);
             return true;
         }
 

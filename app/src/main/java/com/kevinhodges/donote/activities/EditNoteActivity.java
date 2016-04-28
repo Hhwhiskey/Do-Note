@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
@@ -69,10 +68,6 @@ public class EditNoteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ///////////////////////////////////////////////////////////////////////////
 
-
-        Log.d(TAG, "author = " + noteAuthorExtra);
-        Log.d(TAG, "title = " + noteTitleExtra);
-        Log.d(TAG, "content = " + noteContentExtra);
     }
 
     @Override
